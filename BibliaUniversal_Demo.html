@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblia Universal - Demo MVP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { createIcons, Search, BookOpen, Clock, HeartHandshake, Zap, Award, Sun, Moon, Layers3, ChevronsLeft, ChevronsRight, CheckCircle, HandCoins } from 'https://unpkg.com/lucide@latest/dist/umd/lucide.js';
+        createIcons({ icons: { Search, BookOpen, Clock, HeartHandshake, Zap, Award, Sun, Moon, Layers3, ChevronsLeft, ChevronsRight, CheckCircle, HandCoins } });
+    </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            padding: 20px 0;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 420px; /* Tamaño típico de un smartphone */
+            height: 800px; /* Altura fija para la demo */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            position: relative;
+        }
+        /* Configuración para el Modo Oscuro */
+        .dark .app-container {
+            background-color: #111827; /* gray-900 */
+        }
+        .tab-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 70px; /* Espacio para la barra de navegación */
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="app-container">
+    
+    <header class="p-4 flex justify-between items-center border-b dark:border-gray-700 dark:bg-gray-800 bg-white sticky top-0 z-10">
+        <h1 class="text-xl font-extrabold text-indigo-600 dark:text-indigo-400">Biblia Universal</h1>
+        <button id="themeToggle" class="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <i data-lucide="sun" class="w-6 h-6 sun-icon"></i>
+            <i data-lucide="moon" class="w-6 h-6 moon-icon hidden"></i>
+        </button>
+    </header>
+
+    <div class="tab-content">
+        <div id="tab-read" class="p-4">
+            <div class="bg-indigo-50 dark:bg-gray-800 p-5 rounded-xl shadow-inner">
+                <div class="flex justify-between items-center mb-3">
+                    <select class="text-lg font-bold text-gray-800 dark:text-white bg-transparent border-none focus:ring-0">
+                        <option>Juan 3:16 (RVR60)</option>
+                        <option>Juan 3:16 (NVI)</option>
+                        <option>Juan 3:16 (KJV)</option>
+                        <option>Juan 3:16 (Peshitta)</option>
+                    </select>
+                    <button class="text-indigo-600 dark:text-indigo-400 p-1 rounded-full hover:bg-indigo-100 dark:hover:bg-gray-700 transition" title="Estudio Dinámico">
+                        <i data-lucide="layers-3" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                    <p class="mb-4" onclick="alert('Versículo tocado! Se simularía la opción de Resaltar o Añadir Nota.')">
+                        Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.
+                    </p>
+                    <p class="mb-4" onclick="alert('Versículo tocado! Se simularía la opción de Resaltar o Añadir Nota.')">
+                        <span class="font-bold text-indigo-500">17</span> Porque no envió Dios a su Hijo al mundo para condenar al mundo, sino para que el mundo sea salvo por él.
+                    </p>
+                </div>
+            </div>
+             <div class="flex justify-between mt-4 p-3 bg-white dark:bg-gray-800 rounded-xl shadow">
+                <button class="flex items-center text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-800 dark:hover:text-indigo-200 transition">
+                    <i data-lucide="chevrons-left" class="w-5 h-5 mr-1"></i> Anterior
+                </button>
+                <button class="flex items-center text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-800 dark:hover:text-indigo-200 transition">
+                    Siguiente <i data-lucide="chevrons-right" class="w-5 h-5 ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="tab-plans" class="p-4 hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white flex items-center border-b pb-2">
+                <i data-lucide="clock" class="w-6 h-6 mr-2 text-indigo-600 dark:text-indigo-400"></i> Planes de Discipulado
+            </h2>
+
+            <div class="mb-6 p-4 bg-indigo-100 dark:bg-indigo-900 rounded-xl shadow-md">
+                <h3 class="font-semibold text-indigo-800 dark:text-indigo-200 flex items-center">
+                    <i data-lucide="heart-handshake" class="w-5 h-5 mr-2"></i> ¡Tu Fe Ayuda a Construir!
+                </h3>
+                <p class="text-sm text-indigo-700 dark:text-indigo-300 mt-1">
+                    Estos planes son posibles gracias al apoyo. Cada donación nos acerca a una mejor infraestructura y al equipo necesario.
+                </p>
+            </div>
+
+            <div id="plans-list" class="space-y-4">
+                </div>
+        </div>
+
+        <div id="tab-search" class="p-4 hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <i data-lucide="search" class="w-6 h-6 mr-2 text-indigo-600 dark:text-indigo-400"></i> Búsqueda Inteligente
+            </h2>
+            
+            <div class="flex space-x-2 mb-6">
+                <input id="searchInput" type="text" placeholder="Ej: ¿Qué dice la Biblia sobre el amor de Dios?" class="flex-grow p-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white" />
+                <button id="searchButton" class="p-3 rounded-lg text-white font-semibold flex items-center justify-center transition-all duration-200 bg-indigo-600 hover:bg-indigo-700">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div id="searchResults" class="hidden bg-white dark:bg-gray-800 p-5 rounded-xl shadow-lg border border-indigo-200 dark:border-indigo-900">
+                </div>
+            
+            <div id="searchPlaceholder" class="mt-10 p-6 text-center bg-indigo-50 dark:bg-gray-800 rounded-xl">
+                <i data-lucide="book-open" class="w-10 h-10 mx-auto text-indigo-500 mb-3"></i>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Usa el buscador para obtener concordancias y explicaciones teológicas avanzadas.
+                </p>
+            </div>
+        </div>
+        
+        <div id="tab-support" class="p-4 hidden">
+             <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white flex items-center border-b pb-2">
+                <i data-lucide="hand-coins" class="w-6 h-6 mr-2 text-yellow-600"></i> Apoyo y Crecimiento
+            </h2>
+            
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-yellow-200 dark:border-yellow-900">
+                <h3 class="text-2xl font-bold text-yellow-600 dark:text-yellow-400 mb-3">
+                    ¡Tu Fe Nos Impulsa!
+                </h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-4 text-base leading-relaxed">
+                    Este proyecto nace de un esfuerzo personal y fe, con el objetivo de llevar la Palabra de Dios al mundo hispano de forma dinámica.
+                </p>
+                
+                <h4 class="font-semibold text-gray-800 dark:text-white mb-2">Tu Donación Voluntaria Ayuda a:</h4>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 mb-6 space-y-1">
+                    <li>**Adquirir Equipos:** Obtener una **computadora portátil** para mejorar la edición y velocidad de desarrollo.</li>
+                    <li>**Infraestructura:** Cubrir los costos de servidores y las APIs de texto bíblico.</li>
+                    <li>**Perfeccionamiento:** Invertir tiempo completo para crear contenido de estudio de calidad.</li>
+                </ul>
+                
+                <a href="#" onclick="alert('Se abriría tu enlace de donación (PayPal, Ko-fi, etc.)')" class="block w-full text-center py-3 rounded-lg shadow-md text-white font-bold bg-yellow-600 hover:bg-yellow-700 transition duration-200">
+                    Donar Voluntariamente
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="sticky bottom-0 w-full max-w-420px bg-white dark:bg-gray-800 border-t dark:border-gray-700 flex justify-around p-3">
+        <button data-tab="read" class="tab-btn flex flex-col items-center text-indigo-600 dark:text-indigo-400 active">
+            <i data-lucide="book-open" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Leer</span>
+        </button>
+        <button data-tab="plans" class="tab-btn flex flex-col items-center text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+            <i data-lucide="clock" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Planes</span>
+        </button>
+        <button data-tab="search" class="tab-btn flex flex-col items-center text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+            <i data-lucide="search" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Buscar</span>
+        </button>
+        <button data-tab="support" class="tab-btn flex flex-col items-center text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+            <i data-lucide="hand-coins" class="w-6 h-6"></i>
+            <span class="text-xs mt-1">Apoyo</span>
+        </button>
+    </nav>
+</div>
+
+<script>
+    // --- LÓGICA DE LA DEMO (JavaScript) ---
+
+    // 1. MANEJO DE TABS
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+
+            // Ocultar todos los contenidos y desactivar botones
+            document.querySelectorAll('.tab-content > div').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-indigo-600', 'dark:text-indigo-400', 'active');
+                btn.classList.add('text-gray-400', 'hover:text-indigo-600', 'dark:hover:text-indigo-400');
+            });
+
+            // Mostrar el contenido objetivo y activar el botón
+            document.getElementById(`tab-${targetTab}`).classList.remove('hidden');
+            this.classList.add('text-indigo-600', 'dark:text-indigo-400', 'active');
+            this.classList.remove('text-gray-400', 'hover:text-indigo-600', 'dark:hover:text-indigo-400');
+        });
+    });
+
+    // 2. MANEJO DE MODO OSCURO
+    const themeToggle = document.getElementById('themeToggle');
+    const appContainer = document.getElementById('app');
+    const body = document.body;
+    const sunIcon = document.querySelector('.sun-icon');
+    const moonIcon = document.querySelector('.moon-icon');
